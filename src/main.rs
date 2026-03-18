@@ -1,28 +1,19 @@
 #[allow(dead_code)]
+mod parser;
 mod dom;
 mod display;
 
 use display::pretty_print;
-use dom::Node;
+use parser::Parser;
+
 
 fn main() {
-    let root = Node::Element {
-            tag: "div".to_string(),
-            children: vec![
-                Node::Element{
-                    tag: "h1".to_string(),
-                    children: vec![
-                        Node::Text("Hello".to_string()),
-                    ],
-                },
-                Node::Element{
-                    tag: "p".to_string(),
-                    children: vec![
-                        Node::Text("World".to_string()),
-                    ],
-                },
-            ]
-        };
+    let html = "<div><p>Hello</p></div>".to_string();
 
-        pretty_print(&root, 0);
+    let mut parser = Parser::new(html);
+    let dom = parser.parse();
+
+    println!("{:#?}", dom);
+    println!("\n");
+    pretty_print(&dom, 0);
 }
